@@ -3,10 +3,15 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cmath>
 using namespace std;
 
-int Dec(int digit, string& temp);
-string NameIt(int digit);
-void cutNum(string line);
+
 vector <string> rF();
 string summary(vector <string> vS);
+void cutNum(string line);
+string NameIt(int digit);
+bool Hun(int digit, string &a);
+bool Dec(int digit, string& a);
+string teen(int digit);
+int simple(int digit, string& temp);

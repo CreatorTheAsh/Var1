@@ -1,4 +1,3 @@
-
 #include "Header.h"
 
 vector <string> rF()
@@ -39,7 +38,7 @@ void cutNum(string line)
 			string str = to_string(digit);
 			str += ".txt";
 			ofstream output(str);
-			output << digit;
+			output << NameIt(digit);
 			output.close();
 			while (isdigit(line[0]))
 			{
@@ -52,10 +51,10 @@ void cutNum(string line)
 }
 
 
-int Dec(int digit, string& temp)
+int simple(int digit, string& temp)
 {
-	int a = digit % 10;
-	switch (a)
+	//int a = digit % 10;
+	switch (digit)
 	{
 	case 0: {temp = "zero"; return 0; }
 	case 1: {temp = "one"; return 1; }
@@ -68,32 +67,95 @@ int Dec(int digit, string& temp)
 	case 8: {temp = "eight"; return 8; }
 	case 9: {temp = "nine"; return 9; }
 
-	default:cout << "error eoS\n";
+	default:cout << "error simple\n";
 		break;
 	}
 
 }
 
+bool Hun(int digit, string &a)
+{
+	if (digit >= 1000) { return false; }
+	if (digit < 100) { Dec(digit, a); return true; }
+	string temp; a.clear();
+	int t = digit / 100;
+	temp = a;
+	simple(t, temp);
+	a += temp + " hundred";
+	digit -= t * 100;
+	Dec(digit, temp);
+	a += " " + temp;
+	return true;
 
+
+
+}
+
+bool Dec(int digit, string& a)
+{
+	string temp; a.clear();
+	if (digit >= 100) { return false; }
+	if (digit < 10) { if (simple(digit, a)); else { a.clear(); } return false; }
+	if (digit <= 20) { a = teen(digit); return true; }
+	else {
+		int b = digit / 10;
+		int c = digit - b * 10;
+		if (simple(b, temp))
+		{
+
+			int u = simple(b, temp);
+			a += temp;
+			a += "ty";
+			if (u == 5) { a = "fifty"; }
+			if (u == 3) { a = "thirty"; }
+			if (u == 2) { a = "twenty"; }
+		}
+		if (simple(c, temp)) { a = a + " " + temp; }
+	}
+	return true;
+}
+
+string teen(int digit)
+{
+	string teen;
+	if (digit == 0) {  return teen; }
+	if (digit == 20) { teen = "twenty"; return teen; }
+	if (simple(digit, teen) > 3) {
+		teen += "teen";
+	}
+	else
+	{
+		if (simple(digit, teen) == 0) { teen = "ten"; }
+		if (simple(digit, teen) == 1) { teen = "eleven"; }
+		if (simple(digit, teen) == 2) { teen = "twelve"; }
+		if (simple(digit, teen) == 3) { teen = "thirteen"; }
+
+	}
+	return teen;
+}
 string NameIt(int digit)
 {
-	string name, temp;
-	if (digit > 1000)
+	string name = "", temp;
+	digit = digit % 1000000;
+	int a = digit;
+
+
+	if (digit >= 1000)
 	{
-		int a = digit % 1000000;
-		if (Dec(a, temp))
-		{
-			temp += " thousands";
-		}
-		else{ temp  = "thousand"
-		}
-
+		a /= 1000;
+		Hun(a, temp);
+		temp += " thousand";
+		name += temp;
+		temp.clear();
+		int b = digit - a * 1000;
+		if(Hun(b,temp)){ name = name + " " + temp; }
+		else { temp.clear(); }
 	}
-	if (digit < 10)
+	else
 	{
-		Dec(digit, name);
+		if (digit < 10) { simple(digit, name); return name; }
+		if (Hun(digit, temp)) { name += temp; return name; }
+		cout << "error in NameIt\n";
 	}
-
-
 	return name;
 }
