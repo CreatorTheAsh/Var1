@@ -53,7 +53,6 @@ void cutNum(string line)
 
 int simple(int digit, string& temp)
 {
-	//int a = digit % 10;
 	switch (digit)
 	{
 	case 0: {temp = "zero"; return 0; }
@@ -67,7 +66,7 @@ int simple(int digit, string& temp)
 	case 8: {temp = "eight"; return 8; }
 	case 9: {temp = "nine"; return 9; }
 
-	default:cout << "error simple\n";
+	default://cout << "error simple\n";
 		break;
 	}
 
@@ -120,15 +119,16 @@ string teen(int digit)
 	string teen;
 	if (digit == 0) {  return teen; }
 	if (digit == 20) { teen = "twenty"; return teen; }
-	if (simple(digit, teen) > 3) {
+	int f = digit % 10;
+	if (simple(f, teen) > 3) {
 		teen += "teen";
 	}
 	else
 	{
-		if (simple(digit, teen) == 0) { teen = "ten"; }
-		if (simple(digit, teen) == 1) { teen = "eleven"; }
-		if (simple(digit, teen) == 2) { teen = "twelve"; }
-		if (simple(digit, teen) == 3) { teen = "thirteen"; }
+		if (simple(f, teen) == 0) { teen = "ten";	return teen;		}
+		if (simple(f, teen) == 1) { teen = "eleven"; 	return teen;		}
+		if (simple(f, teen) == 2) { teen = "twelve";	return teen;		}
+		if (simple(f, teen) == 3) { teen = "thirteen";	return teen;		}
 
 	}
 	return teen;
